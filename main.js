@@ -1,3 +1,8 @@
+// import { MediaRecorder, register } from "extendable-media-recorder";
+// import { connect } from "extendable-media-recorder-wav-encoder";
+
+// let socket = new WebSocket("ws://192.168.0.116:8080");
+
 let socket = new WebSocket("ws://localhost:8080");
 
 socket.onopen = function (e) {
@@ -23,19 +28,16 @@ socket.onerror = function (error) {
   console.log(`[error] ${error.message}`);
 };
 
-const startLiveStream = () => {
+const startLiveStream = async () => {
   navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
     console.log("grabando");
     const mediaRecorder = new MediaRecorder(stream);
-    const mediaBlobs = [];
+    // const mediaBlobs = [];
 
-    mediaRecorder.addEventListener("dataavailable", (data) => {
-      if (data.data.size > 0) {
-        console.log("send to server");
-        mediaBlobs.push(data.data);
-        const media = new Blob(mediaBlobs, { type: "audio/wav" });
-
-        console.log(media);
+    mediaRecorder.addEventListener("dataavailable", (event) => {
+      if (event.data.size > 0) {
+        console.log("send to server", event.data);
+        // socket.send(event.data);
       }
     });
 
