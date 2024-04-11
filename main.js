@@ -1,13 +1,11 @@
 // import { MediaRecorder, register } from "extendable-media-recorder";
 // import { connect } from "extendable-media-recorder-wav-encoder";
 
-// let socket = new WebSocket("ws://192.168.0.116:8080");
-
-let socket = new WebSocket("ws://localhost:8080");
+// let socket = new WebSocket("ws://localhost:8080");
+let socket = new WebSocket("ws://192.168.0.116:8080");
 
 socket.onopen = function (e) {
   console.log("[open] Conexión establecida");
-  socket.send("Hola desde el cliente");
 };
 
 socket.onmessage = function (event) {
@@ -37,7 +35,7 @@ const startLiveStream = async () => {
     mediaRecorder.addEventListener("dataavailable", (event) => {
       if (event.data.size > 0) {
         console.log("send to server", event.data);
-        // socket.send(event.data);
+        socket.send(event.data);
       }
     });
 
